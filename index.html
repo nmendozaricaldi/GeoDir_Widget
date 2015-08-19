@@ -13,7 +13,6 @@
         <script src="resources/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="resources/css/general.css"/>
 
-
     </head>
     <body>
         <header>
@@ -61,33 +60,9 @@
 				<div class="col-md-12">
 					<div class="panel panel-primary">
 					  <div class="panel-body"> 
-						<input type="text" id="miDireccion" placeholder="Ingrese Direccion"/>
-						<button type="submit" onclick="search()">Buscar</button>
-						<input type="text" id="message" value="" placeholder="Mensaje"/>
-						<input type="text" id="result" value="" placeholder="Resultado"/>
+						<object width="100%" height="40px" data="geodirbasic.html"></object>
 					  </div>
 					</div>
-					<script src="http://www.geodir.co/customer/geodir/dist/js/gaodirbasic.js"></script>
-					<script>
-						var parametersGeodir;
-						function search(){
-							parametersGeodir ={
-									urlService: "http://www.geodir.co/geodirservice",
-									address: document.getElementById("miDireccion").value,
-									message:"",
-									location:{
-										lat:"",
-										lng:""
-									}
-							};
-							parametersGeodir=getResults(parametersGeodir);
-							setTimeout('showResults()',5000);
-						}
-						function showResults(){
-							document.getElementById("message").value=parametersGeodir.message;
-							document.getElementById("result").value=parametersGeodir.location.lat+" "+parametersGeodir.location.lng;
-						}
-					</script>
 				</div>
 			</div>
 			<div class="row">
@@ -148,31 +123,11 @@ function search(){
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-primary">
-					  <div class="panel-body"> 
-									<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
-							<script src="http://leafletjs.com/dist/leaflet.js"></script>
-							<link rel="stylesheet" href="http://www.geodir.co/customer/geodir/dist/css/geodir-min.css"/>
-							<script src="http://www.geodir.co/customer/geodir/dist/js/geodir-min.js"></script>
-							<div id="contendor_geodir" >
-							<script>
-							var geodircontenido = new G.geodirGoogle('contendor_geodir',{
-								    url_service:'http://www.geodir.co/geodirservice',
-								    showcoordenadas:true,
-								    showmap:true,
-								    mapOptions:{
-								    	style:{
-								    		height:'300px',
-								    	width:'100%'
-								    	}
-								    	
-								    }
-								  });
-							</script>
-							</div> 
-							
+					  	<div class="panel-body"> 
+							<object width="100%" height="350px" data="geodirwidget.html"></object>	
 						</div>
-					  </div>
 					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
@@ -184,25 +139,24 @@ function search(){
 								<pre><code>&lt;script src="http://code.jquery.com/jquery-2.1.4.min.js"&gt;&lt;/script&gt;</code></pre>
 							</li>
 							<li>
-								<p>Incluir Leaflet (archivos javascrit y css)</p>
-								<pre><code>&lt;script src="http://leafletjs.com/dist/leaflet.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" /&gt;</code></pre>
-
+								<p>Incluir Leaflet css</p>
+								<pre><code>&lt;link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" /&gt;</code></pre>
 							</li>
 							<li>
 								<p>Incluir Geodir (archivos javascript y css)</p>
-								<pre><code>&lt;script src="http://www.geodir.co/customer/geodir/dist/js/geodir-min.js"&gt;&lt;/script&gt;
+								<pre><code>&lt;script src="http://www.geodir.co/geodirapp/javax.faces.resource/leaflet-src.js.jsf?ln=leaflet"&gt;
+&lt;/script&gt;&lt;script src="http://www.geodir.co/customer/geodir/dist/js/geodir-min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://www.geodir.co/customer/geodir/dist/css/geodir-min.css"/&gt;</code></pre>
 							</li>
 							<li>
 								<p>Crear un "div" y colocarle un id</p>
-								<pre><code>&lt;div id="contendor_geodir"&gt;
+								<pre><code>&lt;div id="contenedor_geodir"&gt;
 &lt;/div&gt;</code></pre>
 							</li> 
 							<li>
 								<p>Script que hace uso de la API de geodir</p>
 								<pre><code>&lt;script&gt;
-var geodircontenido = new G.geodir('contendor_geodir',{
+var geodircontenido = new G.geodir_gmap('contenedor_geodir',{
 	url_service:'http://www.geodir.co/geodirservice',
 	showcoordenadas:true,
 	showmap:true, 

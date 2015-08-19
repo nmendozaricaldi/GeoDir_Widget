@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>geoDir Basic</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="http://www.geodir.co/imagenes/iconoGeoBI.png" sizes="32x32" />
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+  <input type="text" id="miDireccion" placeholder="Ingrese Direccion"/>
+  <button type="submit" onclick="search()">Buscar</button>
+  <input type="text" id="message" value="" placeholder="Mensaje"/>
+  <input type="text" id="result" value="" placeholder="Resultado" style="width:250px;"/>
+  <script src="http://www.geodir.co/customer/geodir/dist/js/gaodirbasic.js"></script>
+          <script>
+            var parametersGeodir;
+            function search(){
+              parametersGeodir ={
+                  urlService: "http://www.geodir.co/geodirservice",
+                  address: document.getElementById("miDireccion").value,
+                  message:"",
+                  location:{
+                    lat:"",
+                    lng:""
+                  }  
+              };
+              parametersGeodir=getResults(parametersGeodir);
+              setTimeout('showResults()',5000);
+            }
+            function showResults(){
+              document.getElementById("message").value=parametersGeodir.message;
+              document.getElementById("result").value=parametersGeodir.location.lat+" "+parametersGeodir.location.lng;
+            }
+          </script>
+
+</body>
+</html>

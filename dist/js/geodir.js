@@ -2,7 +2,11 @@
  GeoDir, a JavaScript library for georeferenciacion interactive and maps. http://www.geodir.co
  (c) 2014-2015, Danilo Nicolas Mendoza Ricaldi
  */
-/** 
+ 
+ function initMap(){
+ 
+ }
+/**
  * An autosuggest textbox control.
  * @class
  * @scope public
@@ -38,6 +42,9 @@ function AutoSuggestControl(oTextbox /*:HTMLInputElement*/ ,
     this.textbox /*:HTMLInputElement*/ = oTextbox;
 
     this.container = oContainer;
+
+    this.typingTimer;
+    this.doneTypingInterval = 2000;
     //initialize the control
     this.init();
 
@@ -139,7 +146,7 @@ AutoSuggestControl.prototype.getTop = function() /*:int*/ {
  * @param oEvent The event object for the keydown event.
  */
 AutoSuggestControl.prototype.handleKeyDown = function(oEvent /*:Event*/ ) {
-
+    //clearTimeout(this.typingTimer);
     switch (oEvent.keyCode) {
         case 38: //up arrow
             this.previousSuggestion();
@@ -167,8 +174,9 @@ AutoSuggestControl.prototype.handleKeyUp = function(oEvent /*:Event*/ ) {
     if (iKeyCode == 8 || iKeyCode == 46) {
         this.cur = -1;
         this.provider.requestSuggestions(this, false);
+        
         this.cur = -1;
-        this._cargarData = true;
+        this._cargarData = false;
 
         //make sure not to interfere with non-character keys
     } else if (iKeyCode < 32 || (iKeyCode >= 33 && iKeyCode < 46) || (iKeyCode >= 112 && iKeyCode <= 123)) {
@@ -176,6 +184,7 @@ AutoSuggestControl.prototype.handleKeyUp = function(oEvent /*:Event*/ ) {
     } else {
         //request suggestions from the suggestion provider with typeahead
         this.provider.requestSuggestions(this, true);
+        
     }
 };
 
@@ -185,6 +194,7 @@ AutoSuggestControl.prototype.handleKeyUp = function(oEvent /*:Event*/ ) {
  */
 AutoSuggestControl.prototype.hideSuggestions = function() {
     this.layer.style.visibility = "hidden";
+    this.layer.style.display = "none";
 };
 
 /**
@@ -337,6 +347,7 @@ AutoSuggestControl.prototype.showSuggestions = function(aSuggestions /*:Array*/ 
     //this.layer.style.left = this.getLeft() + "px";
     //this.layer.style.top = (this.getTop()+this.textbox.offsetHeight) + "px";
     this.layer.style.visibility = "visible";
+    this.layer.style.display = "";
 
 };
 
@@ -362,9 +373,11 @@ AutoSuggestControl.prototype.typeAhead = function(sSuggestion /*:String*/ ) {
  * @class
  * @scope public
  */
-function StateSuggestions() {
+function StateSuggestions(oUrlService) {
     var states =
-        this.states = [];
+    this.states = [];
+    this.urlServce =oUrlService;
+    var statesTemp =this.statesTemp=[];
     this._reloading = false;
     jQuery
         .ajax({
@@ -374,7 +387,7 @@ function StateSuggestions() {
             jsonp: 'callback',
             jsonpCallback: 'jsonpCallback',
             contentType: "application/json; charset=utf-8",
-            url: 'http://www.geodir.co/geodirservice/rest/geodir/direciones?',
+            url: this.urlServce+'/rest/geodir/direciones?',
             data: {
                 'direccion': 'jiron'
             },
@@ -384,6 +397,7 @@ function StateSuggestions() {
             success: function(resp) {
                 for (var i in resp) {
                     states.push(resp[i].suggest);
+                    statesTemp.push(resp[i].suggest);
                 }
             }
         });
@@ -440,19 +454,23 @@ StateSuggestions.prototype.requestSuggestions = function(oAutoSuggestControl /*:
         regFinal = regFinal.replace(mypuntuacion, '\\,?');
         var replaceEncontrado = new RegExp(textReplaceFinal, 'gi');
         if (caseToRepalceText > 0) {
+            
             _oAutoSuggestControl.nroPuerta = textReplaceFinal;
             regFinal = regFinal.replace(textReplaceFinal, '');
         };
         var myRe = new RegExp(regFinal, 'i');
+        if (this.states.length>0) {}else{this.states=this.statesTemp};
         for (var i = 0; i < this.states.length; i++) {
             var match_final = myRe.exec(this.states[i].replace(mypuntuacion, ''))
             if (match_final != null) {
+                _oAutoSuggestControl._cargarData=true;
                 if (caseToRepalceText > 0) {
                     var result = this.states[i].splice(match_final.index + indexReplace, 0, textReplaceFinal);
 
                     aSuggestions.push(result);
                 } else {
                     aSuggestions.push(this.states[i]);
+
                 };
 
             }
@@ -463,9 +481,9 @@ StateSuggestions.prototype.requestSuggestions = function(oAutoSuggestControl /*:
         }
     }
 
-    if (aSuggestions.length == 0 && sTextboxValue.length > 0) {
+    if (aSuggestions.length == 0 && sTextboxValue.length > 0 && bTypeAhead) {
 
-        this.reloadData(sTextboxValue, oAutoSuggestControl, bTypeAhead);
+        this.reloadData(sTextboxValue, _oAutoSuggestControl, bTypeAhead);
     }
     //provide suggestions to the control
     oAutoSuggestControl.autosuggest(aSuggestions, bTypeAhead);
@@ -484,9 +502,10 @@ StateSuggestions.prototype.reloadData = function(oTextboxValue, oAutoSuggestCont
     if (!oAutoSuggestControl._cargarData) {
         return;
     };
+    var _urlServce=this.urlServce;
     this._reloading = true;
-    var states =
-        this.states = [];
+    var _statesTemp =this.statesTemp;
+    var states=this.states=[];
     var _oAutoSuggestControl = oAutoSuggestControl;
     _oAutoSuggestControl.textbox.style.cursor = 'wait';
     var _bTypeAhead = bTypeAhead;
@@ -502,7 +521,7 @@ StateSuggestions.prototype.reloadData = function(oTextboxValue, oAutoSuggestCont
             jsonp: 'callback',
             jsonpCallback: 'jsonpCallback',
             contentType: "application/json; charset=utf-8",
-            url: 'http://www.geodir.co/geodirservice/rest/geodir/direciones?',
+            url: _urlServce+'/rest/geodir/direciones?',
             data: {
                 'direccion': texto
             },
@@ -512,11 +531,21 @@ StateSuggestions.prototype.reloadData = function(oTextboxValue, oAutoSuggestCont
                 _oAutoSuggestControl._cargarData = false;
             },
             success: function(resp) {
+                if (resp.length>0) {
+                    _statesTemp =[];
+                    
+                    _oAutoSuggestControl._cargarData = true;
+                }else{
+                    _oAutoSuggestControl._cargarData = false;
+                };
                 for (var i in resp) {
                     states.push(resp[i].suggest);
+                    _statesTemp.push(resp[i].suggest);
                 }
+                sugg.statesTemp=_statesTemp;
                 _oAutoSuggestControl.textbox.style.cursor = 'auto';
-                sugg.requestSuggestions(_oAutoSuggestControl, _bTypeAhead);
+                _oAutoSuggestControl.autosuggest(states, bTypeAhead);
+                //sugg.requestSuggestions(_oAutoSuggestControl, _bTypeAhead);
                 sugg._reloading = false;
             }
         });
@@ -1163,7 +1192,7 @@ G.Class.extend = function(props) {
 G.Geodir = G.Class
     .extend({
         options: {
-            url_service: 'http://192.168.1.142:8085/geodirservice',
+            url_service: 'http://www.geodir.co/geodirservice',
             showcoordenadas: true,
             showmap: true,
             mapOptions: {
@@ -1172,7 +1201,7 @@ G.Geodir = G.Class
                     width: '100%',
                 },
                 tiled: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ',
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
                 id: 'mapbox.streets',
                 viewX: -75.2243,
                 viewY: -12.0458
@@ -1290,7 +1319,7 @@ G.Geodir = G.Class
                 this._georeferenciar();
                 return false;
             }
-        }
+        } 
     });
 
 G.geodir = function(id, options) {
@@ -1653,7 +1682,7 @@ G.Geodir.Asistido = G.Geodir.extend({
 
                         coordenadaX.value = 'Error de conexion';
                         coordenadaY.value = 'Error de conexion';
-                    };
+                    }; 
                     geodir._form.elements['geodirDireccion'].style.cursor = 'auto';
                     geodir._georef = false;
                     document.getElementsByTagName("body")[0].style.cursor = 'auto';
@@ -1697,7 +1726,17 @@ G.asistido = function(id, options) {
     return wmsLegendControl = new G.Geodir.Asistido(id, options);
 };
 
-G.Geodir.GeodirGoogle = G.Geodir.extend({
+G.Geodir.Geodir_Gmap = G.Geodir.extend({
+
+	_initMap:function(){
+		var body =
+		console.log("creando google");
+		var apiGoogle = document.createElement("script");
+		apiGoogle.type = "text/javascript";
+		apiGoogle.src = "https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap";
+		this._container.appendChild(apiGoogle);
+	},
+	
     _createMap: function() {
         var f = this._form;
         var row = document.createElement('div');
@@ -1707,7 +1746,7 @@ G.Geodir.GeodirGoogle = G.Geodir.extend({
         }
         var idMap = 'mapGeodir_' + Math.floor(Math.random() * (100));
         row.id = idMap;
-        f.appendChild(row); 
+        f.appendChild(row);
         try {
             this._map = L.map(idMap).setView(
                 [this.options.mapOptions.viewY,
@@ -1722,6 +1761,7 @@ G.Geodir.GeodirGoogle = G.Geodir.extend({
         } catch (e) {
             this.options.showmap = false;
         }
+		this._initMap();
 
     },
     _createForm: function() {
@@ -1750,7 +1790,7 @@ G.Geodir.GeodirGoogle = G.Geodir.extend({
         G.DomEvent.on(input, 'keydown', this._onKeyPress, this);
         col.appendChild(input);
         input.style.width = '100%';
-        var oTextbox = new AutoSuggestControl(input, col, new StateSuggestions());
+        var oTextbox = new AutoSuggestControl(input, col, new StateSuggestions(this.options.url_service));
         row.appendChild(col);
         conainerForm.appendChild(row);
 
@@ -1791,6 +1831,7 @@ G.Geodir.GeodirGoogle = G.Geodir.extend({
 
         var opcionesmostrar = this.options;
         var funvionmostrar = this._showMarkerOnMap;
+		var direccion=this._form.elements['geodirDireccion'].value;
         jQuery
             .ajax({
                 type: "GET",
@@ -1801,20 +1842,26 @@ G.Geodir.GeodirGoogle = G.Geodir.extend({
                 contentType: "application/json; charset=utf-8",
                 url: this.options.url_service + '/rest/georef/geodir?',
                 data: {
-                    'direccion': this._form.elements['geodirDireccion'].value
+                    'direccion': direccion
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
 
                     geodir._form.elements['geodirDireccion'].style.cursor = 'auto';
                     geodir._georef = false;
                     document.getElementsByTagName("body")[0].style.cursor = 'auto';
-                    this._form.elements['geodir_btngeoreferenciar'].style.cursor = 'auto';
+                    //this._form.elements['geodir_btngeoreferenciar'].style.cursor = 'auto';
+					geodir._geodreferenciarGoogle(geodir);
                 },
                 success: function(resp) {
 
                     geodir._form.elements['geodirDireccion'].style.cursor = 'auto';
-                    opcionesmostrar.showmap ? funvionmostrar(
-                        resp.x, resp.y, geodir) : '';
+					if(resp.x!="0" && resp.y!="0"){
+						opcionesmostrar.showmap ? funvionmostrar(
+                        resp.x, resp.y, geodir,'geodir') : '';
+					}else{ 
+						geodir._geodreferenciarGoogle(geodir);
+					}
+                    
                     geodir._georef = false;
                     document.getElementsByTagName("body")[0].style.cursor = 'auto';
                     geodir._form.elements['geodir_btngeoreferenciar'].style.cursor = 'auto';
@@ -1822,24 +1869,41 @@ G.Geodir.GeodirGoogle = G.Geodir.extend({
                 }
             });
     },
-
-
-    _showMarkerOnMap: function(lng, lat, geodir) {
-        function pintarMarker(coorx, coory, geodirres, centrarMapa) {
+ 	
+	_geodreferenciarGoogle:function(geodir){
+	var direccion=this._form.elements['geodirDireccion'].value;
+	var funvionmostrar = this._showMarkerOnMap;
+	this._geocoder = new google.maps.Geocoder();
+		this._geocoder.geocode({'address': direccion}, function(results, status) {
+			if (status === google.maps.GeocoderStatus.OK) { 
+				funvionmostrar(results[0].geometry.location.K,
+				results[0].geometry.location.G, geodir,'google');
+			} else {
+				console.log("Google no encontro la idreccion por "+status);
+			}
+		}); 
+	},  
+    _showMarkerOnMap: function(lng, lat, geodir,powered) {
+        function pintarMarker(coorx, coory, geodirres,opowered, centrarMapa) {
             geodirres._markers.clearLayers();
+            if(opowered=="geodir"){
+                opowered="<div align='right'><img src='http://www.geodir.co/customer/geodir/dist/img/poweredgeodir.png' width='47' height='25'/></div>"
+            }else{
+                opowered="<div align='right'><img src='http://www.geodir.co/customer/geodir/dist/img/poweredgoogle.jpg' width='47' height='25'/></div>"
+            }
             var mark = L.marker([coory, coorx]).bindPopup(
-                    geodirres._form.elements['geodirDireccion'].value)
+                    geodirres._form.elements['geodirDireccion'].value+"<br/>"+opowered)
                 .addTo(geodirres._markers).openPopup();
             // geodirres._markers.addLayer(mark);
             centrarMapa(geodirres._markers.getBounds());
         }
-        pintarMarker(lng, lat, geodir, function(bounds) {
+        pintarMarker(lng, lat, geodir,powered, function(bounds) {
             geodir._map.fitBounds(bounds);
         });
     },
 });
 
 
-G.geodirGoogle = function(id, options) {
-    return wmsLegendControl = new G.Geodir.GeodirGoogle(id, options);
+G.geodir_gmap = function(id, options) {
+    return wmsLegendControl = new G.Geodir.Geodir_Gmap(id, options);
 };

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>geoDir Basic</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+  <script src="http://www.geodir.co/geodirapp/javax.faces.resource/leaflet-src.js.jsf?ln=leaflet"></script>
+  <link rel="stylesheet" href="http://www.geodir.co/customer/geodir/dist/css/geodir-min.css"/>
+  <script src="http://www.geodir.co/customer/geodir/dist/js/geodir.js"></script>
+</head>
+<body>
+  <div id="contenedor_geodir" >
+              <script>
+              var geodircontenido = new G.geodir_gmap('contenedor_geodir',{
+                    url_service:'http://www.geodir.co/geodirservice',
+                    showcoordenadas:true,
+                    showmap:true,
+                    mapOptions:{
+                      style:{
+                        height:'300px',
+                      width:'100%'
+                      }
+                      
+                    }
+                  });
+              </script>
+              </div> 
+</body>
+</html>
