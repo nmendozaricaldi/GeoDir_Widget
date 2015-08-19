@@ -1,0 +1,127 @@
+.geodir-contenedor{
+  width: 100%;
+  background: #ddd;
+  outline: 0;
+}
+
+.geodir-form{
+  width: 100%;
+}
+
+.geodir-form-group {
+    margin-bottom: 15px;
+}
+.geodir-map-container{
+  width: 100%;
+  height: 200px;
+  border: solid 1px;
+}
+
+.geodir-form .geodir-form-group {
+  margin: 15px;
+}
+
+
+.geodir-form .geodir-form-group:before,
+.geodir-form .geodir-form-group:after {
+  display: table;
+  content: " ";
+  margin: 15px;
+}
+
+.geodir-col-md-8 {
+width: 66.66666667%;
+float: left;
+}
+.geodir-col-md-6 {
+width: 50%;
+float: left;
+}
+.geodir-col-md-3 {
+width: 20%;
+float: left;
+}
+.geodir-col-md-4 {
+width: 33.333333%;
+float: left;
+}
+.geodir-col-md-12 {
+width: 100%;
+float: left;
+}
+
+.geodir-input {
+    float: left;
+    width: 100%;
+    padding: 5px;
+}
+
+.geodir-output {
+    float: left;
+    width: 50%;
+}
+
+.geodir-name {
+float: left;
+width: 60%;
+}
+
+.geodir-up {
+float: left;
+background-color: red;
+background-repeat: no-repeat;
+background-position: center;
+height: 20px;
+width: 16px;
+opacity: 0.75;
+cursor: pointer;
+}
+.geodir-down {
+float: left;
+background-color: black;
+background-repeat: no-repeat;
+background-position: center;
+height: 20px;
+width: 16px;
+opacity: 0.75;
+cursor: pointer;
+}
+.geodir-form-control{
+display: block;
+width: 100%;
+height: 34px;
+/*padding: 6px 12px;*/
+font-size: 14px;
+line-height: 1.42857143;
+color: #555;
+background-color: #fff;
+background-image: none;
+border: 1px solid #ccc;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.geodir-control-label{
+ display: inline-block;
+max-width: 100%;
+margin-bottom: 5px;
+font-weight: bold;
+}
+
+.geodir-control-btn {
+  background: #0091d6;
+border: none;
+color: #fff;
+padding: 5px;
+border-radius: 4px; 
+height: 34px;
+width: 200px;
+}
+.geodir-form-control-btn{
+  text-align: center;
+  vertical-align: middle;
+}

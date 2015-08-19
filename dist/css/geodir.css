@@ -1,0 +1,266 @@
+.geodir-contenedor{
+  width: 100%;
+  background: #ddd;
+  outline: 0;
+}
+
+.geodir-form{
+  width: 100%;
+}
+ 
+.geodir-form-group {
+
+}
+.geodir-form-container{
+
+}
+
+.geodir-map-container{
+  width: 100%;
+  height: 100%;
+  border: solid 1px;
+}
+
+.geodir-map-container-g{
+    width: 100%;
+  height: 100%;
+}
+
+.geodir-form .geodir-form-group {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.geodir-form-container .geodir-form-group:before,
+.geodir-form-container .geodir-form-group:after{
+  display: table;
+  content: " ";
+  margin: 3px;
+}
+.geodir-form .geodir-form-container:before,
+.geodir-form .geodir-form-container:after {
+  display: table;
+  content: " ";
+}
+
+.geodir-col-md-8 {
+width: 66.66666667%;
+float: left;
+}
+.geodir-col-md-6 {
+width: 50%;
+float: left;
+}
+.geodir-col-md-3 {
+width: 20%;
+float: left;
+}
+.geodir-col-md-4 {
+width: 33.333333%;
+float: left;
+}
+.geodir-col-md-12 {
+width: 100%;
+float: left;
+position: relative;
+}
+.geodir-col-md-11 {
+width: 80%;
+float: left;
+}
+.geodir-col-md-1 {
+width: 20%;
+float: left;
+}
+
+.geodir-input {
+    float: left;
+    width: 100%;
+    padding: 5px;
+}
+
+.geodir-output {
+    float: left;
+    width: 50%;
+}
+
+.geodir-name {
+float: left;
+width: 60%;
+}
+
+.geodir-up {
+float: left;
+background-color: red;
+background-repeat: no-repeat;
+background-position: center;
+height: 20px;
+width: 16px;
+opacity: 0.75;
+cursor: pointer;
+}
+.geodir-down {
+float: left;
+background-color: black;
+background-repeat: no-repeat;
+background-position: center;
+height: 20px;
+width: 16px;
+opacity: 0.75;
+cursor: pointer;
+}
+.geodir-form-control{
+display: block;
+width: 100%;
+height: 34px;
+/*padding: 6px 12px;*/
+font-size: 14px;
+line-height: 1.42857143;
+color: #555;
+background-color: #fff;
+background-image: none;
+border: 1px solid #ccc;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.geodir-control-label{
+ display: inline-block;
+max-width: 100%;
+margin-bottom: 5px;
+font-weight: bold;
+}
+
+.geodir-control-btn {
+  background: #0091d6;
+border: none;
+color: #fff;
+padding: 5px;
+border-radius: 4px; 
+height: 34px;
+width: 200px;
+}
+.geodir-form-control-btn{
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+/* GEODIR GOOGLE */
+.geodir-form-google{
+   width: 100%;
+   height: 100%;
+}
+
+
+
+.geodir-form-control-google{
+display: block;
+width: 100%;
+padding: 0px 5px;
+height: 30px;
+border-radius: 2px 0 0 2px;
+font-size: 14px;
+line-height: 1.42857143;
+color: #555;
+background-color: #fff;
+border: 1px solid transparent;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+box-shadow: 0 2px 6px rgba(0,0,0,0.3),0 4px 15px -5px rgba(0,0,0,0.0);
+
+
+}
+
+.geodir-form-google .geodir-form-group-google {
+padding: 10px;
+margin: 0px 15px 15px 40px;
+}
+
+.geodir-form-container-dir{
+  z-index: 2;
+  position: absolute;
+  width: 100%;
+max-width: 600px;
+}
+
+.geodirgoogle-map-container{
+  width: 100%;
+  height: 200px;
+  border: solid 1px;
+}
+
+.geodir-form-control-btn-google{
+  text-align: left;
+  vertical-align: middle;
+}
+
+
+.geodir-control-btn-google:hover {
+background-color: #3d86b7;
+background-image: url(../img/lupablanca.png);
+
+}
+
+.geodir-control-btn-google {
+background-image: url(../img/lupablanca.png);
+background-position:  25px 8px;
+background-repeat: no-repeat;
+border: none;
+color: #fff;
+padding: 5px;
+border-radius: 4px; 
+height: 32px;
+width: 72px;
+-webkit-transition: width 2s;
+background-color: #4a93c3;
+border-radius: 0 2px 2px 0;
+box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+
+}
+
+.geodir-map-container-google{
+  border: 1px solid transparent;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+}
+
+div.suggestions {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+   border: 1px solid rgb(207, 205, 205);
+   position: relative;
+max-height: 500px;
+    z-index: 1222; 
+    background-color: white;
+    overflow-y: auto;
+    font-size: 12px;
+font-family: arial;
+color: #696969;
+box-shadow: 0 2px 6px rgba(0,0,0,0.3),0 4px 15px -5px rgba(0,0,0,0.0); 
+border-radius: 0 0 5px 5px;
+}
+
+div.suggestions div {
+   cursor: default;
+padding: 6px 10px;
+border-bottom: 1px solid #E8E8E8;
+}
+
+div.suggestions div.current {
+    background-color: #ECECEC;
+}
+
+.geodir-number-autosuggest{
+              color: black;
+              font-weight: bold;
+}
